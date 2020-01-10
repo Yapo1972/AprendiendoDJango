@@ -1,0 +1,87 @@
+Para poder instalar cualquier modulo en Python 3.8.1
+python -m pip install nombre_modulo
+
+Para poder crear un entorno virtual( un entorno que indepediza las instalaciones)
+python -m virtualenv nombre_entorno
+( esto lo que hace es crear una carpeta con este nombre y una estructura determinada y ahi se guardan todas las nuevas instalaciones )
+
+Para crear un proyecto 
+python -m django startproject nombre_proyecto
+Esto crea una estructura de directorios para el proyecto
+
+para ejecutar un servidor de desarrollo y prueba
+python manage.py runserver puerto
+
+para crear una aplicacion dentro del proyecto
+python manage.py startapp nombre_aplicacion
+
+para poder utilizar bases de datos SQL-SERVER
+python -m pip install django-pyodbc-azure
+
+y en settings.py del proyecto
+DATABASES = {
+    'default': {
+        'ENGINE': 'sql_server.pyodbc',
+        'NAME': 'mydb',
+        'USER': 'user@myserver',
+        'PASSWORD': 'password',
+        'HOST': 'myserver.database.windows.net',
+        'PORT': '',
+
+        'OPTIONS': {
+            'driver': 'ODBC Driver 13 for SQL Server',
+        },
+    },
+}
+
+informacion relevante al respecto https://pypi.org/project/django-pyodbc-azure/
+
+
+para realizar las migraciones y preparar la base de datos para el uso 
+python manage.py migrate
+
+
+
+La gestion de los modelos es bastante parecida a la del EntityFrameWork.
+
+Todos los modelos se crean en el fichero models.py y deben heredar de la clase models.Model. Cada clase es una tabla en la base de datos
+Las propiedades son los nombres de los campos.
+Por omision DJango crea un campo ID que es autoincremental como la llave de cada tabla
+Esto es un ejemplo de crear una tabla que tiene un enlace con otra tabla
+class ProductosPorContrato(models.Model):
+    contrato = models.ForeignKey(ContratosProveedores,on_delete=models.CASCADE)
+    nombreProducto = models.CharField( max_length=250)
+
+luego de que se hagan variaciones en los modelos debe generarse una migracion para esas modificaciones:
+python manage.py makemigrations nombre_aplicacion
+
+Antes debe haberse adicionado la app en las aplicaciones del proyecto. Esto se hace en el fichero 
+settings.py
+
+INSTALLED_APPS = [
+    'miAplicacion.apps.MiaplicacionConfig',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+]
+
+para poder visualizar las instrucciones SQL generadas para una migracion en especifico:
+python manage.py sqlmigrate nombre_aplicacion numero_de_la_migracion
+
+Es bueno recordar que las migraciones se guardan en la carpeta migrations dentro de la carpeta de la 
+aplicacion
+
+Luego de realizadas las migraciones para ejecutarlas dentro de las bases de datos debe:
+python manage.py migrate
+
+Y se realizan las migraciones. Hasta el momento funciona de maravilla.
+
+
+Para crear usuarios administrativos
+python manage.py createsuperuser
+
+
+
