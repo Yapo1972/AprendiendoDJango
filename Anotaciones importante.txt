@@ -2,7 +2,7 @@ Para poder instalar cualquier modulo en Python 3.8.1
 python -m pip install nombre_modulo
 
 Para poder crear un entorno virtual( un entorno que indepediza las instalaciones)
-python -m virtualenv nombre_entorno
+python -m venv nombre_entorno
 ( esto lo que hace es crear una carpeta con este nombre y una estructura determinada y ahi se guardan todas las nuevas instalaciones )
 
 Para crear un proyecto 
